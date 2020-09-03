@@ -25,7 +25,7 @@ function checkDirIntegrity() {
         }
         if (!fs.existsSync(channelsPath)) {
             try {
-                fs.openSync(filePath, 'a');
+                fs.openSync(channelsPath, 'a');
                 console.log('Created a file to store channel ids!');
             } catch(err) {
                 console.error(err);
