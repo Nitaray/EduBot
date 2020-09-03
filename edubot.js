@@ -19,7 +19,7 @@ const checkInterval = process.env.CHECK_INTERVAL * 60 * 1000;
 function checkDirIntegrity() {
     return new Promise((resolve, reject) => {
         if (!fs.existsSync('.env')) {
-            reject('Please create a .env with appropriate values as shown in the readme.md file!');
+            reject('Please create a .env with appropriate values as shown in the README.md file!');
             return;
         }
         if (!fs.existsSync(channelsPath)) {
