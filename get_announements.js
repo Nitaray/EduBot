@@ -1,43 +1,83 @@
 const puppeteer = require('puppeteer');
 
-module.exports = (announcementLink) => {
+module.exports = (announcementLink, announcementNumber) => {
     return new Promise(async (resolve, reject) => {
+        // Prepare link
+        announcementLink += announcementNumber;
+
         // Go to edusoftweb
-        const browser = await puppeteer.launch();
+        const browser = await puppeteer.launch({args: ['--single-process']});
         const page = await browser.newPage();
         await page.goto(announcementLink);
 
+        var title, description;
+        let screenshotPath = `./screenshots/${announcementNumber}.jpg`;
+
         let info = await page.$$('.TextThongTin');
-        let title = await (await (await info[0].$('span')).getProperty('innerText')).jsonValue();
-        let description = await (await (await info[1].$('span')).getProperty('innerText')).jsonValue();
+
+        let titlespan = await info[0].$('span');
+        if (titlespan)
+            title = await (await titlespan.getProperty('innerText')).jsonValue();
+
+        let descriptionspan = await info[1].$('span');
+        if (descriptionspan)
+            description = await (await descriptionspan.getProperty('innerText')).jsonValue();
         
-    });
-}
+        if (!title) {
+            await browser.close();
+            reject('No new announcement was found!');
+            return;
+        }
 
-function test() {
-    return new Promise(async (resolve, reject) => {
-        // Go to edusoftweb
-        const browser = await puppeteer.launch();
-        await browser.version().then((version) => console.log(version));
-        const page = await browser.newPage();
-        console.log('Check 2');
-    //   await page.goto('http://edusoftweb.hcmiu.edu.vn/default.aspx?page=chitietthongtin&id=1060');
-    //   console.log('Check 3');
-
-    //   let info = await page.$$(".TextThongTin");
-    //   let title = await (
-    //     await (await info[0].$("span")).getProperty("innerText")
-    //   ).jsonValue();
-    //   console.log(title);
-    //   let description = await (
-    //     await (await info[1].$("span")).getProperty("innerText")
-    //   ).jsonValue();
-    //   console.log(description);
-    //   await browser.close();
-    //   resolve(title);
+        await page.setViewport({width:1000, height:1000});
+        await page.screenshot({ 
+            path: screenshotPath,
+            type:"jpeg",
+            fullPage:false
+        });
         await browser.close();
-        resolve(1);
+        resolve([title, description, announcementLink, screenshotPath, announcementNumber]);
     });
 }
 
-console.log(test());
+// function test() {
+//     return new Promise(async (resolve, reject) => {
+//         // Go to edusoftweb
+//         const browser = await puppeteer.launch({ args: ['--single-process'] });
+//         const page = await browser.newPage();
+//         let announcementLink = 'http://edusoftweb.hcmiu.edu.vn/default.aspx?page=chitietthongtin&id=';
+//         let announcementNumber = 1061;
+//         announcementLink += announcementNumber
+//         await page.goto(announcementLink);
+
+//         var title, description;
+//         let screenshotPath = `./screenshots/${announcementNumber}.jpg`;
+
+//         let info = await page.$$('.TextThongTin');
+
+//         let titlespan = await info[0].$('span');
+//         if (titlespan)
+//             title = await (await titlespan.getProperty('innerText')).jsonValue();
+
+//         let descriptionspan = await info[1].$('span');
+//         if (descriptionspan)
+//             description = await (await descriptionspan.getProperty('innerText')).jsonValue();
+
+//         if (!title) {
+//             await browser.close();
+//             reject('No new announcement was found!');
+//             return;
+//         }
+
+//         await page.setViewport({ width: 1000, height: 1000 });
+//         await page.screenshot({
+//             path: screenshotPath,
+//             type: "jpeg",
+//             fullPage: false
+//         });
+//         await browser.close();
+//         resolve([title, description, screenshotPath]);
+//     })
+// }
+
+// test().then((data) => console.log(data), (data) => console.log(data));
