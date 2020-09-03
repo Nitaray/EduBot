@@ -50,7 +50,6 @@ function announce(announcement) {
             try {
                 let channel = botClient.channels.cache.get(id);
                 channel.send(announcement);
-    
             } catch(err) {
                 console.log(`Something went wrong while trying to announce to channel ${id}.`);
                 console.error(err);
@@ -80,6 +79,9 @@ botClient.on('message', msg => {
             break;
         case '.addchannel':
             addChannel(msg.guild, msg.channel);
+            break;
+        case '.konami':
+            msg.reply(`The next annoucement number is ${announcementNumber}`);
             break;
     }
 })
