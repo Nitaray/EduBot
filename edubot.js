@@ -80,7 +80,7 @@ function announce(announcement) {
 }
 
 function addChannel(channel) {
-    if (!channelsID.find((id) => id == channel.id)) {
+    if (!channelsID.has(channel.id)) {
         channelsID.push(channel.id);
         save_channels(channelsPath, channelsID);
         console.log('Added a channel with id ' + channel.id);
@@ -92,8 +92,8 @@ function addChannel(channel) {
 }
 
 function removeChannel(channel) {
-    if (channelsID.find((id) => id == channel.id)) {
-        channelsID.delete(id);
+    if (channelsID.has(channel.id)) {
+        channelsID.delete(channel.id);
         save_channels(channelsPath, channelsID);
         console.log('Removed a channel with id ' + channel.id);
         channel.send('Successfully removed this channel from the announcement list!');
@@ -103,16 +103,29 @@ function removeChannel(channel) {
     }
 }
 
+function rejectAdminCommand(message) {
+    message.reply('this is an admin-only command!');
+}
+
 botClient.on('message', msg => {
     switch (msg.content.toLowerCase()) {
         case '.restart':
-            restartBot(msg.channel)
+            if (msg.member.hasPermission('ADMINISTRATOR'))
+                restartBot(msg.channel)
+            else 
+                rejectAdminCommand(msg);
             break;
         case '.addchannel':
-            addChannel(msg.channel);
+            if (msg.member.hasPermission('ADMINISTRATOR'))
+                addChannel(msg.channel);
+            else 
+                rejectAdminCommand(msg);
             break;
         case '.removechannel':
-            removeChannel(msg.channel);
+            if (msg.member.hasPermission('ADMINISTRATOR'))
+                removeChannel(msg.channel);
+            else
+                rejectAdminCommand(msg);
             break;
         case '.konami':
             msg.reply(`The next annoucement number is ${announcementNumber}`);
