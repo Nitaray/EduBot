@@ -4,6 +4,7 @@ const load_channels = require('./load_channels.js');
 const save_channels = require('./save_channels.js');
 const get_announement = require('./get_announements.js');
 const prepare_message = require('./prepare_message.js');
+const { exit } = require('process');
 require('dotenv').config()
 
 const botClient = new Discord.Client();
@@ -143,4 +144,7 @@ botClient.on('ready', () => {
 checkDirIntegrity().then((resolvemsg) => {
     console.log(resolvemsg);
     startBot();
-}, (errormsg) => console.error(errormsg));
+}, (errormsg) => {
+    console.error(errormsg);
+    exit(1);
+});
