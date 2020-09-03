@@ -32,7 +32,7 @@ BOT_TOKEN=<your-discord-bot-token>
 # Path to the local channel ids file
 CHANNELS_ID_FILE_PATH=channels.txt
 # Path to the local screenshot directory
-SCREENSHOTS_DIR_PATH='./screenshots/'
+SCREENSHOTS_DIR_PATH='./screenshots'
 # The interval between each announcement check (in minutes)
 CHECK_INTERVAL=15
 # Link to the announcement site of edusoft

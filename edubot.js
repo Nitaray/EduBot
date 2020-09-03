@@ -34,7 +34,7 @@ function checkDirIntegrity() {
             }
         }
         if (!fs.existsSync(process.env.SCREENSHOTS_DIR_PATH))
-            fs.mkdir(SCREENSHOTS_DIR_PATH, (err) => {
+            fs.mkdir(process.env.SCREENSHOTS_DIR_PATH, (err) => {
                 if (err) {
                     console.error(err);
                     reject('Error encounterd while trying to create a folder');

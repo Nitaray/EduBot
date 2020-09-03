@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+require('dotenv').config();
 
 module.exports = (announcementLink, announcementNumber) => {
     return new Promise(async (resolve, reject) => {
@@ -11,7 +12,7 @@ module.exports = (announcementLink, announcementNumber) => {
         await page.goto(announcementLink);
 
         var title, description;
-        let screenshotPath = `./screenshots/${announcementNumber}.jpg`;
+        let screenshotPath = `${process.env.SCREENSHOTS_DIR_PATH}/${announcementNumber}.jpg`;
 
         let info = await page.$$('.TextThongTin');
 
