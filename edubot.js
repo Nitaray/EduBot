@@ -82,7 +82,7 @@ function announce(announcement) {
 
 function addChannel(channel) {
     if (!channelsID.has(channel.id)) {
-        channelsID.push(channel.id);
+        channelsID.add(channel.id);
         save_channels(channelsPath, channelsID);
         console.log('Added a channel with id ' + channel.id);
         channel.send('Successfully added this channel to the announcement list!');
