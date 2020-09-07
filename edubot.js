@@ -69,6 +69,7 @@ function announce(announcement) {
         if (id) {
             try {
                 let channel = botClient.channels.cache.get(id);
+                channel.send('@everyone');
                 channel.send(announcement);
             } catch(err) {
                 console.log(`Something went wrong while trying to announce to channel ${id}.`);
