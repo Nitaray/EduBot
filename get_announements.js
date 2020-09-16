@@ -36,6 +36,7 @@ module.exports = (announcementLink, announcementNumber) => {
             type:"jpeg",
             fullPage:false
         });
+        await page.close();
         await browser.close();
         resolve([title, description, announcementLink, screenshotPath, announcementNumber]);
     });
