@@ -40,7 +40,6 @@ module.exports = (announcementLink, announcementNumber) => {
         } catch (e) {
             console.log(e);
         } finally {
-            await page.close();
             await browser.close();
             resolve([title, description, announcementLink, screenshotPath, announcementNumber]);
         }
