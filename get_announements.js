@@ -9,11 +9,11 @@ module.exports = (announcementLink, announcementNumber) => {
         // Go to edusoftweb
         const browser = await puppeteer.launch({args: ['--single-process']});
         const page = await browser.newPage();
+        let screenshotPath = `${process.env.SCREENSHOTS_DIR_PATH}/${announcementNumber}.jpg`;
         try {
             await page.goto(announcementLink);
     
             var title, description;
-            let screenshotPath = `${process.env.SCREENSHOTS_DIR_PATH}/${announcementNumber}.jpg`;
     
             let info = await page.$$('.TextThongTin');
     
